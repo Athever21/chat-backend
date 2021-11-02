@@ -2,7 +2,7 @@
  
 This is a backend for chat application written in Java using Spring.
 
-Url: [https://athever21-chat-backend.herokuapp.com/]()
+Url: [https://athever21-chat-backend.herokuapp.com/](https://athever21-chat-backend.herokuapp.com/)
 
 ---
 
