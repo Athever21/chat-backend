@@ -15,8 +15,8 @@ import chat.app.errors.forbidden.FrobiddenException;
 import chat.app.errors.notfound.NotFoundException;
 import chat.app.errors.unauthorized.UnauthorizedException;
 import chat.app.errors.badrequest.BadRequestException;
-import chat.app.jwt.Jwt;
 import chat.app.jwt.JwtUtils;
+import chat.app.models.TokenResponse;
 import chat.app.models.User;
 import chat.app.models.UserBody;
 import chat.app.repositories.ChannelRepository;
@@ -47,7 +47,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public Jwt loginUser(HttpServletResponse res,UserBody logUser) {
+  public TokenResponse loginUser(HttpServletResponse res,UserBody logUser) {
     User user = userRepository.findByUsername(logUser.getUsername());
     if (user == null) {
       throw new NotFoundException("User not found.");
@@ -57,10 +57,10 @@ public class UserService {
     }
     Cookie refreshCookie = JwtUtils.createRefreshToken(user.getId());
     res.addCookie(refreshCookie);
-    return JwtUtils.generateToken(user.getId(), false);
+    return new TokenResponse(user, JwtUtils.generateToken(user.getId(), false).getToken());
   }
 
-  public Jwt refreshToken(String refreshToken) {
+  public TokenResponse refreshToken(String refreshToken) {
     if (refreshToken == "") {
       throw new UnauthorizedException("Invalid refresh token");
     }
@@ -69,7 +69,7 @@ public class UserService {
     if (user.isEmpty()) {
       throw new NotFoundException("User not found");
     }
-    return JwtUtils.generateToken(user.get().getId(), false);
+    return new TokenResponse(user.get(), JwtUtils.generateToken(user.get().getId(), false).getToken());
   }
 
   public User changeUser(User user, String id, UserBody userBody) {

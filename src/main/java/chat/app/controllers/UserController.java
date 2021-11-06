@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import chat.app.jwt.Jwt;
+import chat.app.models.TokenResponse;
 import chat.app.models.User;
 import chat.app.models.UserBody;
 import chat.app.services.ChannelService;
@@ -41,12 +41,12 @@ public class UserController {
   }
 
   @PostMapping("/refresh_token")
-  public Jwt refreshToken(@CookieValue(name = "refresh_token", defaultValue = "") String refreshCookie) {
+  public TokenResponse refreshToken(@CookieValue(name = "refresh_token", defaultValue = "") String refreshCookie) {
     return userService.refreshToken(refreshCookie);
   }
 
   @PostMapping("/login")
-  public Jwt loginUser(HttpServletResponse res, @RequestBody UserBody user) {
+  public TokenResponse loginUser(HttpServletResponse res, @RequestBody UserBody user) {
     return userService.loginUser(res, user);
   }
 
