@@ -1,5 +1,6 @@
 package chat.app.models;
 
+import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -25,6 +26,8 @@ public class Message {
   @DBRef
   private User user;
 
+  private Date createdAt;
+
   public Message() {
   }
 
@@ -32,6 +35,7 @@ public class Message {
     this.message = message;
     this.channel = channel;
     this.user = user;
+    this.createdAt = new Date();
   }
 
   public String getId() {
@@ -56,6 +60,10 @@ public class Message {
 
   public void setChannel(Channel channel) {
     this.channel = channel;
+  }
+
+  public Date getCreatedAt() {
+    return this.createdAt;
   }
 
   public User getUser() {
